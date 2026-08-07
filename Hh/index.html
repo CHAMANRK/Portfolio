@@ -44,6 +44,8 @@
   section.active{display:block;}
 
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;width:100%;box-sizing:border-box;}
+  #setupCard.collapsed-ok{padding:12px 16px;}
+  #setupCard.collapsed-ok #setupHint{display:none;}
   .label{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-bottom:8px;font-family:var(--mono);}
 
   input[type=file]{display:none;}
@@ -147,7 +149,7 @@
       <div class="label" style="margin:0">Offline engine</div>
       <span class="status-pill" id="libStatus"><span class="dot"></span>not installed</span>
     </div>
-    <div class="dropzone-hint hint" style="color:var(--text-dim);font-size:12px;margin-top:8px;line-height:1.4;">
+    <div class="dropzone-hint hint" id="setupHint" style="color:var(--text-dim);font-size:12px;margin-top:8px;line-height:1.4;">
       One-time download (~90 KB) so QR generate/scan works fully offline after this.
     </div>
     <button class="primary" id="installBtn">Download &amp; install</button>
@@ -239,14 +241,16 @@ const LIBS = [
   { key:"qrcode", urls:[
       "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js",
       "https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js",
-      "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+      "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.js",
+      "https://fastly.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"
   ]},
   { key:"jsqr", urls:[
       "https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js",
-      "https://unpkg.com/jsqr@1.4.0/dist/jsQR.js"
+      "https://unpkg.com/jsqr@1.4.0/dist/jsQR.js",
+      "https://fastly.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"
   ]}
 ];
-const LIB_CACHE = "qrelay-libs-v1";
+const LIB_CACHE = "qrelay-libs-v2";
 let libsReady = false;
 
 const installBtn = document.getElementById("installBtn");
@@ -295,6 +299,20 @@ function injectScript(blob){
   });
 }
 
+// after loading, make sure the global actually has the API we need —
+// catches cases where a mirror serves an incompatible/wrong library
+function verifyLib(key){
+  if(key === "qrcode"){
+    if(typeof QRCode === "undefined" || typeof QRCode.toCanvas !== "function"){
+      throw new Error("qrcode: galat library mili (toCanvas nahi mila)");
+    }
+  } else if(key === "jsqr"){
+    if(typeof jsQR !== "function"){
+      throw new Error("jsqr: galat library mili (jsQR function nahi mila)");
+    }
+  }
+}
+
 async function loadOneLib(lib, onProgress){
   const cacheKey = "https://qrelay.local/lib/" + lib.key + ".js"; // synthetic, just a cache key
 
@@ -307,9 +325,13 @@ async function loadOneLib(lib, onProgress){
         const blob = await hit.blob();
         onProgress(blob.size, blob.size);
         await injectScript(blob);
+        verifyLib(lib.key);
         return;
       }
-    }catch(e){ /* fall through to network */ }
+    }catch(e){
+      // cached copy bad or missing API — drop it and fall through to network
+      try{ const cache = await caches.open(LIB_CACHE); await cache.delete(cacheKey); }catch(e2){}
+    }
   }
 
   // try each mirror, 2 attempts per mirror, before giving up
@@ -318,13 +340,14 @@ async function loadOneLib(lib, onProgress){
     for(let attempt=1; attempt<=2; attempt++){
       try{
         const { blob } = await fetchWithProgress(url, onProgress);
+        await injectScript(blob);
+        verifyLib(lib.key);
         if(canPersist()){
           try{
             const cache = await caches.open(LIB_CACHE);
             await cache.put(cacheKey, new Response(blob));
           }catch(e){ /* non-fatal */ }
         }
-        await injectScript(blob);
         return;
       }catch(e){
         lastErr = e;
@@ -365,10 +388,14 @@ async function installLibs(){
     installPct.textContent = "100%";
     libsReady = true;
     setLibStatus(canPersist() ? "ready · saved offline" : "ready (this session)", "on");
-    installBtn.textContent = "Installed ✓";
     startBtnRefresh();
     camBtn.disabled = false;
-    setTimeout(() => { setupCard.classList.add("collapsed-ok"); }, 400);
+    setTimeout(() => {
+      installBtn.classList.add("hidden");
+      installBar.classList.add("hidden");
+      installText.classList.add("hidden");
+      setupCard.classList.add("collapsed-ok");
+    }, 500);
   }catch(err){
     console.error(err);
     setLibStatus("failed — tap retry", "warn");
@@ -496,7 +523,17 @@ function drawFrame(){
   frameNow.textContent = frameIdx + 1;
   loopCountEl.textContent = loopCount;
   QRCode.toCanvas(qrCanvas, frames[frameIdx], { errorCorrectionLevel: "M", margin: 1, width: 300 }, (err) => {
-    if(err) console.error(err);
+    if(err){
+      console.error(err);
+      stopBroadcast();
+      alert("QR draw fail: " + err.message + "\nOffline engine reinstall karo (neeche 'Retry download').");
+      installBtn.classList.remove("hidden");
+      installBtn.disabled = false;
+      installBtn.textContent = "Retry download";
+      setupCard.classList.remove("collapsed-ok");
+      libsReady = false;
+      setLibStatus("broken — reinstall karo", "warn");
+    }
   });
 }
 
