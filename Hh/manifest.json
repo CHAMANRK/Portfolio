@@ -1,0 +1,11 @@
+{
+  "name": "QRelay - offline file transfer",
+  "short_name": "QRelay",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#14151C",
+  "theme_color": "#14151C",
+  "icons": [
+    { "src": "icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
