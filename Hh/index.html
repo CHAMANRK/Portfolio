@@ -23,6 +23,7 @@
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);}
+<<<<<<< HEAD
   body{min-height:100dvh;display:flex;flex-direction:column;}
 
   header{padding:20px 20px 12px;border-bottom:1px solid var(--line);}
@@ -30,11 +31,21 @@
   .logo .mark{width:26px;height:26px;border-radius:7px;flex:none;}
   .logo h1{font-size:19px;margin:0;letter-spacing:-0.02em;font-weight:700;}
   .logo span{color:var(--text-dim);font-size:12px;font-family:var(--mono);}
+=======
+  body{min-height:100dvh;display:flex;flex-direction:column;overflow-x:hidden;}
+
+  header{padding:20px 20px 12px;padding-left:max(20px, env(safe-area-inset-left));padding-right:max(20px, env(safe-area-inset-right));border-bottom:1px solid var(--line);}
+  .logo{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+  .logo .mark{width:26px;height:26px;border-radius:7px;flex:none;}
+  .logo h1{font-size:clamp(16px,4.5vw,19px);margin:0;letter-spacing:-0.02em;font-weight:700;}
+  .logo span{color:var(--text-dim);font-size:11px;font-family:var(--mono);}
+>>>>>>> 2f2cfe0 (Replaced index.html - 08 Aug 2026 00:22)
 
   nav{display:flex;gap:0;padding:0 20px;border-bottom:1px solid var(--line);}
   nav button{
     flex:1;background:none;border:none;color:var(--text-dim);
     padding:14px 0;font-size:14px;font-weight:600;font-family:var(--sans);
+<<<<<<< HEAD
     border-bottom:2px solid transparent;cursor:pointer;
   }
   nav button.active{color:var(--text);border-bottom-color:var(--amber);}
@@ -44,15 +55,31 @@
   section.active{display:block;}
 
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;}
+=======
+    border-bottom:2px solid transparent;cursor:pointer;min-height:46px;
+  }
+  nav button.active{color:var(--text);border-bottom-color:var(--amber);}
+
+  main{flex:1;padding:16px;max-width:520px;width:100%;margin:0 auto;box-sizing:border-box;}
+  section{display:none;}
+  section.active{display:block;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;width:100%;box-sizing:border-box;}
+>>>>>>> 2f2cfe0 (Replaced index.html - 08 Aug 2026 00:22)
   .label{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-bottom:8px;font-family:var(--mono);}
 
   input[type=file]{display:none;}
   .dropzone{
+<<<<<<< HEAD
     border:1.5px dashed var(--line);border-radius:12px;padding:28px 16px;
+=======
+    border:1.5px dashed var(--line);border-radius:12px;padding:24px 14px;
+>>>>>>> 2f2cfe0 (Replaced index.html - 08 Aug 2026 00:22)
     text-align:center;cursor:pointer;transition:border-color .15s;
   }
   .dropzone:hover{border-color:var(--amber);}
   .dropzone .fname{color:var(--amber);font-family:var(--mono);font-size:13px;word-break:break-all;}
+<<<<<<< HEAD
   .dropzone .hint{color:var(--text-dim);font-size:13px;margin-top:6px;}
 
   .row{display:flex;gap:10px;align-items:center;justify-content:space-between;}
@@ -60,11 +87,23 @@
   select{
     background:var(--card-2);color:var(--text);border:1px solid var(--line);
     border-radius:8px;padding:8px 10px;font-family:var(--mono);font-size:13px;
+=======
+  .dropzone .hint{color:var(--text-dim);font-size:12px;margin-top:6px;}
+
+  .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+  .row + .row{margin-top:12px;}
+  .row > span:first-child{flex:none;font-size:13px;}
+  select{
+    background:var(--card-2);color:var(--text);border:1px solid var(--line);
+    border-radius:8px;padding:9px 10px;font-family:var(--mono);font-size:12.5px;
+    flex:1 1 160px;min-width:0;max-width:100%;
+>>>>>>> 2f2cfe0 (Replaced index.html - 08 Aug 2026 00:22)
   }
 
   button.primary{
     width:100%;background:var(--amber);color:#141414;border:none;border-radius:10px;
     padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:14px;
+<<<<<<< HEAD
   }
   button.primary:disabled{opacity:0.35;cursor:not-allowed;}
   button.stop{background:var(--red);color:#fff;}
@@ -75,6 +114,20 @@
   .qr-status b{color:var(--amber);}
 
   video{width:100%;border-radius:12px;background:#000;display:block;}
+=======
+    min-height:48px;box-sizing:border-box;-webkit-tap-highlight-color:transparent;
+  }
+  button.primary:disabled{opacity:0.35;cursor:not-allowed;}
+  button.stop{background:var(--red);color:#fff;}
+  button.ghost{background:var(--card-2);color:var(--text);border:1px solid var(--line);}
+
+  #qrStage{display:flex;flex-direction:column;align-items:center;padding:20px 0 6px;}
+  #qrCanvas{background:#fff;border-radius:10px;image-rendering:pixelated;width:100%;max-width:280px;height:auto;aspect-ratio:1/1;}
+  .qr-status{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-top:12px;text-align:center;}
+  .qr-status b{color:var(--amber);}
+
+  video{width:100%;border-radius:12px;background:#000;display:block;aspect-ratio:3/4;object-fit:cover;}
+>>>>>>> 2f2cfe0 (Replaced index.html - 08 Aug 2026 00:22)
   .scan-wrap{position:relative;}
   .scan-frame{
     position:absolute;inset:12%;border:2px solid var(--amber);border-radius:8px;
@@ -83,6 +136,7 @@
 
   .progress-bar{height:8px;border-radius:5px;background:var(--card-2);overflow:hidden;margin-top:14px;}
   .progress-fill{height:100%;background:var(--teal);width:0%;transition:width .2s;}
+<<<<<<< HEAD
   .progress-text{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-top:6px;}
 
   .status-pill{
@@ -103,6 +157,43 @@
 
   footer{padding:14px 20px 24px;text-align:center;color:var(--text-dim);font-size:11px;font-family:var(--mono);}
   .hidden{display:none !important;}
+=======
+  .progress-text{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-top:6px;gap:8px;flex-wrap:wrap;}
+
+  .status-pill{
+    display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;
+    padding:4px 10px;border-radius:999px;background:var(--card-2);color:var(--text-dim);white-space:nowrap;
+  }
+  .status-pill.on{color:var(--teal);}
+  .status-pill.warn{color:var(--amber);}
+  .status-pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none;}
+
+  .download-card{display:none;text-align:center;padding:22px 16px;}
+  .download-card.show{display:block;}
+  .download-card .fname{font-family:var(--mono);color:var(--teal);word-break:break-all;margin:8px 0 4px;}
+  .download-card .hash{font-family:var(--mono);font-size:11px;color:var(--text-dim);word-break:break-word;}
+  a.dl-btn{
+    display:inline-block;margin-top:14px;background:var(--teal);color:#0c1a16;
+    text-decoration:none;font-weight:700;padding:12px 26px;border-radius:10px;font-size:14px;
+    min-height:44px;box-sizing:border-box;line-height:20px;
+  }
+
+  footer{padding:14px 20px calc(20px + env(safe-area-inset-bottom));text-align:center;color:var(--text-dim);font-size:10.5px;font-family:var(--mono);}
+  .hidden{display:none !important;}
+
+  @media (max-width:380px){
+    main{padding:12px;}
+    .card{padding:13px;border-radius:12px;}
+    header{padding:16px 14px 10px;}
+    nav{padding:0 12px;}
+    button.primary{font-size:14px;padding:12px;}
+    .row{gap:8px;}
+    select{font-size:12px;padding:8px;}
+  }
+  @media (min-width:600px){
+    main{padding:24px 20px;}
+  }
+>>>>>>> 2f2cfe0 (Replaced index.html - 08 Aug 2026 00:22)
 </style>
 </head>
 <body>
@@ -122,6 +213,26 @@
 
 <main>
 
+<<<<<<< HEAD
+=======
+  <!-- SETUP / LIBRARY INSTALL -->
+  <div class="card" id="setupCard">
+    <div class="row">
+      <div class="label" style="margin:0">Offline engine</div>
+      <span class="status-pill" id="libStatus"><span class="dot"></span>not installed</span>
+    </div>
+    <div class="dropzone-hint hint" style="color:var(--text-dim);font-size:12px;margin-top:8px;line-height:1.4;">
+      One-time download (~90 KB) so QR generate/scan works fully offline after this.
+    </div>
+    <button class="primary" id="installBtn">Download &amp; install</button>
+    <div class="progress-bar hidden" id="installBar"><div class="progress-fill" id="installFill"></div></div>
+    <div class="progress-text hidden" id="installText">
+      <span id="installCount">0 / 2 files</span>
+      <span id="installPct">0%</span>
+    </div>
+  </div>
+
+>>>>>>> 2f2cfe0 (Replaced index.html - 08 Aug 2026 00:22)
   <!-- SEND -->
   <section id="sendSection" class="active">
     <div class="card">
@@ -173,7 +284,11 @@
         <div class="scan-frame"></div>
       </div>
       <canvas id="scanCanvas" class="hidden"></canvas>
+<<<<<<< HEAD
       <button class="primary" id="camBtn">Start camera</button>
+=======
+      <button class="primary" id="camBtn" disabled>Start camera</button>
+>>>>>>> 2f2cfe0 (Replaced index.html - 08 Aug 2026 00:22)
     </div>
 
     <div class="card" id="progressCard" style="display:none">
@@ -197,10 +312,151 @@
 
 <footer>Works fully offline once loaded · nothing leaves your devices</footer>
 
+<<<<<<< HEAD
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
 <script>
+=======
+<script>
+/* ================= LIBRARY LOADER ================= */
+const LIBS = [
+  { key:"qrcode", url:"https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js" },
+  { key:"jsqr",   url:"https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" }
+];
+const LIB_CACHE = "qrelay-libs-v1";
+let libsReady = false;
+
+const installBtn = document.getElementById("installBtn");
+const installBar = document.getElementById("installBar");
+const installFill = document.getElementById("installFill");
+const installText = document.getElementById("installText");
+const installCount = document.getElementById("installCount");
+const installPct = document.getElementById("installPct");
+const libStatus = document.getElementById("libStatus");
+const setupCard = document.getElementById("setupCard");
+
+function setLibStatus(text, mode){
+  libStatus.lastChild.textContent = text;
+  libStatus.classList.remove("on","warn");
+  if(mode) libStatus.classList.add(mode);
+}
+
+function canPersist(){
+  return ("caches" in window) && (location.protocol === "https:" || location.hostname === "localhost");
+}
+
+async function fetchWithProgress(url, onChunk){
+  const res = await fetch(url);
+  if(!res.ok) throw new Error(url + " → HTTP " + res.status);
+  const total = parseInt(res.headers.get("content-length") || "0", 10);
+  const reader = res.body.getReader();
+  const chunks = [];
+  let received = 0;
+  while(true){
+    const { done, value } = await reader.read();
+    if(done) break;
+    chunks.push(value);
+    received += value.length;
+    onChunk(received, total);
+  }
+  return { blob: new Blob(chunks, { type: "application/javascript" }), bytes: received };
+}
+
+function injectScript(blob){
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = URL.createObjectURL(blob);
+    s.onload = resolve;
+    s.onerror = () => reject(new Error("script inject failed"));
+    document.body.appendChild(s);
+  });
+}
+
+async function loadOneLib(lib, onProgress){
+  // try persistent cache first (works when served over https/localhost)
+  if(canPersist()){
+    try{
+      const cache = await caches.open(LIB_CACHE);
+      const hit = await cache.match(lib.url);
+      if(hit){
+        const blob = await hit.blob();
+        onProgress(blob.size, blob.size);
+        await injectScript(blob);
+        return;
+      }
+    }catch(e){ /* fall through to network */ }
+  }
+  const { blob } = await fetchWithProgress(lib.url, onProgress);
+  if(canPersist()){
+    try{
+      const cache = await caches.open(LIB_CACHE);
+      await cache.put(lib.url, new Response(blob));
+    }catch(e){ /* non-fatal, just no persistence */ }
+  }
+  await injectScript(blob);
+}
+
+async function installLibs(){
+  installBtn.disabled = true;
+  installBtn.textContent = "Downloading…";
+  installBar.classList.remove("hidden");
+  installText.classList.remove("hidden");
+  setLibStatus("downloading…", "warn");
+
+  const progress = LIBS.map(() => ({ received: 0, total: 0 }));
+  const paint = () => {
+    const totalKnown = progress.every(p => p.total > 0);
+    const sumTotal = progress.reduce((a,p)=>a+p.total,0);
+    const sumRecv = progress.reduce((a,p)=>a+p.received,0);
+    const pct = totalKnown && sumTotal > 0 ? Math.min(100, Math.round(sumRecv/sumTotal*100)) : 0;
+    installFill.style.width = pct + "%";
+    installPct.textContent = pct + "%";
+  };
+
+  try{
+    for(let i=0;i<LIBS.length;i++){
+      installCount.textContent = `${i} / ${LIBS.length} files`;
+      await loadOneLib(LIBS[i], (received, total) => {
+        progress[i] = { received, total };
+        paint();
+      });
+      installCount.textContent = `${i+1} / ${LIBS.length} files`;
+    }
+    installFill.style.width = "100%";
+    installPct.textContent = "100%";
+    libsReady = true;
+    setLibStatus(canPersist() ? "ready · saved offline" : "ready (this session)", "on");
+    installBtn.textContent = "Installed ✓";
+    startBtnRefresh();
+    camBtn.disabled = false;
+    setTimeout(() => { setupCard.classList.add("collapsed-ok"); }, 400);
+  }catch(err){
+    console.error(err);
+    setLibStatus("failed — tap retry", "warn");
+    installBtn.disabled = false;
+    installBtn.textContent = "Retry download";
+    alert("Library download fail ho gaya: " + err.message + "\nInternet check karke retry karo.");
+  }
+}
+
+installBtn.addEventListener("click", installLibs);
+
+// auto-check: if already cached from a previous visit, install silently on load
+window.addEventListener("DOMContentLoaded", async () => {
+  if(!canPersist()) return;
+  try{
+    const cache = await caches.open(LIB_CACHE);
+    const hits = await Promise.all(LIBS.map(l => cache.match(l.url)));
+    if(hits.every(Boolean)) installLibs();
+  }catch(e){}
+});
+
+function startBtnRefresh(){
+  startBtn.disabled = !(libsReady && selectedFile);
+}
+
+>>>>>>> 2f2cfe0 (Replaced index.html - 08 Aug 2026 00:22)
 /* ---------- shared protocol ---------- */
 const PROTO = "QRX1";
 
@@ -257,7 +513,11 @@ fileInput.addEventListener("change", () => {
   if(!f) return;
   selectedFile = f;
   dzText.innerHTML = `<div class="fname">${f.name}</div><div class="hint">${(f.size/1024).toFixed(1)} KB</div>`;
+<<<<<<< HEAD
   startBtn.disabled = false;
+=======
+  startBtnRefresh();
+>>>>>>> 2f2cfe0 (Replaced index.html - 08 Aug 2026 00:22)
 });
 
 startBtn.addEventListener("click", async () => {
@@ -310,7 +570,11 @@ function drawFrame(){
 function stopBroadcast(){
   if(broadcastTimer){ clearInterval(broadcastTimer); broadcastTimer = null; }
   qrStage.classList.add("hidden");
+<<<<<<< HEAD
   startBtn.disabled = !selectedFile;
+=======
+  startBtnRefresh();
+>>>>>>> 2f2cfe0 (Replaced index.html - 08 Aug 2026 00:22)
 }
 stopBtn.addEventListener("click", stopBroadcast);
 
@@ -337,6 +601,13 @@ let received = new Map();
 
 camBtn.addEventListener("click", async () => {
   if(stream){ stopCamera(); return; }
+<<<<<<< HEAD
+=======
+  if(!libsReady){
+    alert("Pehle upar se offline engine install karo, phir camera use karo.");
+    return;
+  }
+>>>>>>> 2f2cfe0 (Replaced index.html - 08 Aug 2026 00:22)
   try{
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
     video.srcObject = stream;
