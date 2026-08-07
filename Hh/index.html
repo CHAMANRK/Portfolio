@@ -236,15 +236,8 @@
 <script>
 /* ================= LIBRARY LOADER ================= */
 const LIBS = [
-  { key:"qrcode", urls:[
-      "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js",
-      "https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js",
-      "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
-  ]},
-  { key:"jsqr", urls:[
-      "https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js",
-      "https://unpkg.com/jsqr@1.4.0/dist/jsQR.js"
-  ]}
+  { key:"qrcode", url:"https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js" },
+  { key:"jsqr",   url:"https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" }
 ];
 const LIB_CACHE = "qrelay-libs-v1";
 let libsReady = false;
@@ -296,13 +289,11 @@ function injectScript(blob){
 }
 
 async function loadOneLib(lib, onProgress){
-  const cacheKey = "https://qrelay.local/lib/" + lib.key + ".js"; // synthetic, just a cache key
-
   // try persistent cache first (works when served over https/localhost)
   if(canPersist()){
     try{
       const cache = await caches.open(LIB_CACHE);
-      const hit = await cache.match(cacheKey);
+      const hit = await cache.match(lib.url);
       if(hit){
         const blob = await hit.blob();
         onProgress(blob.size, blob.size);
@@ -311,28 +302,14 @@ async function loadOneLib(lib, onProgress){
       }
     }catch(e){ /* fall through to network */ }
   }
-
-  // try each mirror, 2 attempts per mirror, before giving up
-  let lastErr = null;
-  for(const url of lib.urls){
-    for(let attempt=1; attempt<=2; attempt++){
-      try{
-        const { blob } = await fetchWithProgress(url, onProgress);
-        if(canPersist()){
-          try{
-            const cache = await caches.open(LIB_CACHE);
-            await cache.put(cacheKey, new Response(blob));
-          }catch(e){ /* non-fatal */ }
-        }
-        await injectScript(blob);
-        return;
-      }catch(e){
-        lastErr = e;
-        if(attempt < 2) await new Promise(r => setTimeout(r, 700));
-      }
-    }
+  const { blob } = await fetchWithProgress(lib.url, onProgress);
+  if(canPersist()){
+    try{
+      const cache = await caches.open(LIB_CACHE);
+      await cache.put(lib.url, new Response(blob));
+    }catch(e){ /* non-fatal, just no persistence */ }
   }
-  throw new Error(lib.key + ": sab mirrors fail (" + (lastErr ? lastErr.message : "unknown") + ")");
+  await injectScript(blob);
 }
 
 async function installLibs(){
@@ -385,7 +362,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   if(!canPersist()) return;
   try{
     const cache = await caches.open(LIB_CACHE);
-    const hits = await Promise.all(LIBS.map(l => cache.match("https://qrelay.local/lib/" + l.key + ".js")));
+    const hits = await Promise.all(LIBS.map(l => cache.match(l.url)));
     if(hits.every(Boolean)) installLibs();
   }catch(e){}
 });
