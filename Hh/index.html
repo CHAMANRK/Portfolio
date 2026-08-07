@@ -679,9 +679,44 @@ async function assembleFile(total){
 }
 
 /* ---------- service worker ---------- */
+// Auto-heal: if an OLD service worker is already controlling this page from a
+// previous deploy, it'll keep serving stale cached files forever unless we
+// force it out. On each load we check for a new sw.js, and if the old SW is
+// stuck, unregister + hard-reload once (per session) so the fresh deploy loads.
 if("serviceWorker" in navigator){
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch(console.error);
+  window.addEventListener("load", async () => {
+    try{
+      const regs = await navigator.serviceWorker.getRegistrations();
+      const alreadyReset = sessionStorage.getItem("qrelay-sw-reset");
+
+      if(regs.length && !alreadyReset){
+        for(const r of regs){
+          await r.unregister();
+          if(r.active) r.active.postMessage({ type: "SKIP_WAITING" });
+        }
+        if("caches" in window){
+          try{
+            const keys = await caches.keys();
+            await Promise.all(keys.filter(k => k !== "qrelay-libs-v2").map(k => caches.delete(k)));
+          }catch(e){}
+        }
+        sessionStorage.setItem("qrelay-sw-reset", "1");
+        location.reload();
+        return;
+      }
+
+      const reg = await navigator.serviceWorker.register("sw.js");
+      reg.addEventListener("updatefound", () => {
+        const nw = reg.installing;
+        if(!nw) return;
+        nw.addEventListener("statechange", () => {
+          if(nw.state === "activated" && !sessionStorage.getItem("qrelay-sw-updated")){
+            sessionStorage.setItem("qrelay-sw-updated", "1");
+            location.reload();
+          }
+        });
+      });
+    }catch(e){ console.error(e); }
   });
 }
 </script>
